@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
 
   const r = await fetch(`${url}/rest/v1/customers`, {
     method: 'POST',
-    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+    headers: { apikey: key, ...(key.startsWith('eyJ') ? { Authorization: `Bearer ${key}` } : {}), 'Content-Type': 'application/json', Prefer: 'return=minimal' },
     body: JSON.stringify({ ...clean, delivery_location: 'Guntur' }),
   });
   if (r.status === 409) return res.status(409).json({ errors: { phone: 'This number is already registered.' } });
